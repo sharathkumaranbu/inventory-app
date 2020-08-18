@@ -1,0 +1,60 @@
+<div class="inventory-list">
+  <h1>
+    Inventories
+  </h1>
+  <table class="table is-hoverable is-fullwidth is-striped">
+    <thead>
+      <th></th>
+      <th title="Name">Name</th>
+      <th title="quantity">Quantity</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of inventories">
+        <td>
+          <input type="checkbox" name="{{ item.name }}" (change)="selectItems($event)" />
+        </td>
+        <td>
+          {{ item.name }}
+        </td>
+        <td>
+          {{ item.quantity }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="buttons" *ngIf="selectedItems.length > 0">
+    <button class="button is-success" (click)="updateItems()">Update({{ selectedItems.length }}) Items</button>
+    <button class="button is-danger" (click)="deleteItems()">Delete({{ selectedItems.length }}) Items</button>
+  </div>
+
+  <app-modal [showModal]="updateClicked" [title]="'Update Items'" (Close)="onModalClose()" (Save)="onUpdate()">
+    <header class="update-modal-header" *ngFor="let item of selectedItems">
+      <div class="control">
+        <label class="label">Name</label>
+        <input
+          type="text"
+          class="input is-hovered"
+          placeholder="Name"
+          value="{{ item.name }}"
+          (change)="updateSelectedItems(item, $event)"
+          disabled
+        />
+      </div>
+      <div class="control">
+        <label class="label">Quantity</label>
+        <input
+          type="number"
+          class="input is-hovered"
+          placeholder="Quantity"
+          required
+          value="{{ item.quantity }}"
+          (change)="updateSelectedItems(item, $event)"
+        />
+      </div>
+    </header>
+  </app-modal>
+
+  <app-modal [showModal]="deleteClicked" [title]="'Delete Items'" (Close)="onModalClose()" (Save)="onDelete()">
+    <form>Are you sure want to delete ({{ selectedItems.length }}) items</form>
+  </app-modal>
+</div>

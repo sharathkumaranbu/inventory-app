@@ -1,0 +1,45 @@
+<div class="add-inventory">
+  <h1>
+    Add inventory
+  </h1>
+
+  <div>
+    <div class="no-items" *ngIf="itemControls.length === 0">
+      No Items to display
+    </div>
+    <form [formGroup]="inventoryForm" (ngSubmit)="handleSubmit()" class="add-item">
+      <section class="card" formArrayName="inventoryItems" *ngFor="let item of itemControls; let i = index">
+        <div [formGroupName]="i">
+          <header class="card-header">
+            <h3>Item {{ i }}</h3>
+            <div (click)="removeInventory(i)" class="remove">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </div>
+          </header>
+          <div class="card-content">
+            <div class="control">
+              <label class="label">Name</label>
+              <input type="text" class="input is-hovered" formControlName="name" placeholder="Name" required />
+            </div>
+            <div class="control">
+              <label class="label">Quantity</label>
+              <input
+                type="number"
+                class="input is-hovered"
+                formControlName="quantity"
+                placeholder="Quantity"
+                required
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+      <div>
+        <button type="button" (click)="addInventory()" class="button add-item-btn">ADD ITEM</button>
+        <button type="submit" value="Submit" [disabled]="itemControls.length === 0" class="button is-primary">
+          SUBMIT
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

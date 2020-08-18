@@ -1,0 +1,13 @@
+<div class="sidebar">
+  <ul class="menu-list">
+    <li
+      *ngFor="let item of itemsList"
+      [routerLink]="[item.link]"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <img src="{{ item.image }}" alt="Image"/>
+      <span>{{ item.name }}</span>
+    </li>
+  </ul>
+</div>

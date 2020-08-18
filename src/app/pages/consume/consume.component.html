@@ -1,0 +1,72 @@
+<div class="consume-inventory">
+  <h1>
+    Consume inventory
+  </h1>
+  <div
+    class="dropdown"
+    (click)="toggleDropdown()"
+    (clickOutside)="closeDropdown()"
+    [ngClass]="{
+      'is-active': showDropdown
+    }"
+  >
+    <div class="dropdown-trigger">
+      <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+        <span>{{ selectedItem }}</span>
+        <span class="icon is-small">
+          <i class="fas fa-angle-down" aria-hidden="true"></i>
+        </span>
+      </button>
+    </div>
+    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+      <div class="dropdown-content">
+        <a *ngFor="let item of inventories" class="dropdown-item" (click)="select(item)">
+          {{ item.name }}
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="no-items" *ngIf="itemControls.length === 0">
+    No Items to display
+  </div>
+  <form [formGroup]="inventoryForm" (ngSubmit)="handleConsume()" class="add-item">
+    <div>
+      <section class="card" formArrayName="inventoryItems" *ngFor="let item of itemControls; let i = index">
+        <div [formGroupName]="i">
+          <header class="card-header">
+            <h3>
+              {{ item.value.name }}
+            </h3>
+            <div class="control">
+              <div class="select">
+                <select
+                  type="number"
+                  class="input is-small select"
+                  formControlName="selectedQuantity"
+                  placeholder="Quantity"
+                >
+                  <option
+                    *ngFor="let i of numbers(item.value.quantity); let in = index"
+                    [ngClass]="{
+                      isSelected: item.value.selectedQuantity === in + 1
+                    }"
+                  >
+                    {{ in + 1 }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div (click)="removeInventory(i, item.value.name)" class="remove">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </div>
+          </header>
+        </div>
+      </section>
+      <div>
+        <button type="submit" [disabled]="itemControls.length === 0" value="Submit" class="button is-primary">
+          CONSUME ITEMS
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
